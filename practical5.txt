@@ -1,0 +1,44 @@
+// Online C compiler to run C program online
+#include<stdio.h>
+#include<sys/types.h>
+#include<unistd.h>
+
+void sort(int a[10]){
+    int n=10, i=0, j=0, temp;
+    for(i=1; i<=n; i++){
+        for(j=1; j<n; j++){
+                if(a[i]<a[j]){
+                temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }
+    }
+}
+
+int main(int argc,char *argv[])
+{
+    int pid;
+    int i=0,n=10,search;
+    char *env[]={NULL};
+    int a[10];
+    char *newarg[]={NULL,"sort.txt", NULL};
+    newarg[0]=argv[1];
+    
+    printf("Enter array elements : ");
+    for(i=1;i<10;i++)
+        scanf(" %d",&a[i]);
+    pid=fork();
+    if(pid==0){
+        sleep(1);
+        printf("child process id: %d \n", getpid());
+        execve(argv[1],newarg,env);
+    }
+    else{
+        sort(a);
+        printf("parent process id: %d\n", getpid());
+        for(i=1;i<=n;i++){
+            printf(" %d",a[i]);
+        }printf("\n");
+    }
+}
